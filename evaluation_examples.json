@@ -1,0 +1,28 @@
+
+[
+  {
+    "question": "How do I reset my password?",
+    "expected_answer": "To reset your password, open the login page and select Forgot Password."
+  },
+  {
+    "question": "PASSWORD RESET",
+    "expected_answer": "To reset your password, open the login page and select Forgot Password."
+  },
+  {
+    "question": "Where is my order?",
+    "expected_answer": "Thank you for contacting support. Please provide more details about your issue."
+  },
+  {
+    "question": "I forgot my password",
+    "expected_answer": "To reset your password, open the login page and select Forgot Password."
+  },
+  {
+    "question": "Can you help me change my password?",
+    "expected_answer": "To reset your password, open the login page and select Forgot Password."
+  },
+  {
+  "question": "I cannot log in to my account",
+  "expected_answer": "To reset your password, open the login page and select Forgot Password."
+  }
+
+]
