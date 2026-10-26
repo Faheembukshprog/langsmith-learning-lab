@@ -1,4 +1,3 @@
-
 import json
 
 from app import answer_question

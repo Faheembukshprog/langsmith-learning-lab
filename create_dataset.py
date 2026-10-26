@@ -1,4 +1,3 @@
-
 import json
 
 from langsmith import Client
@@ -20,8 +19,7 @@ def main():
     dataset = client.create_dataset(
         dataset_name=DATASET_NAME,
         description=(
-            "Evaluation examples for the beginner LangSmith "
-            "support assistant project."
+            "Evaluation examples for the beginner LangSmith support assistant project."
         ),
     )
 

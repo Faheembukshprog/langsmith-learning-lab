@@ -1,14 +1,10 @@
-
 import os
 
 from dotenv import load_dotenv
-from langsmith import traceable
+from langsmith import traceable, tracing_context
 
-# Load local .env settings if a .env file exists.
-# Existing environment variables are preserved.
 load_dotenv()
 
-# Set safe defaults for this learning project.
 os.environ.setdefault("LANGSMITH_TRACING", "true")
 os.environ.setdefault(
     "LANGSMITH_PROJECT",
@@ -20,25 +16,48 @@ os.environ.setdefault(
 )
 
 
+def get_support_category(question: str) -> str:
+    """Classify a support question using simple rules."""
+    question_lower = question.lower()
+
+    reset_phrases = [
+        "password reset",
+        "reset my password",
+        "reset password",
+        "forgot my password",
+        "forgot password",
+        "change my password",
+        "change password",
+        "cannot log in",
+        "can't log in",
+        "cannot login",
+        "can't login",
+        "cannot sign in",
+        "can't sign in",
+        "unable to log in",
+        "unable to login",
+        "unable to sign in",
+    ]
+
+    if any(phrase in question_lower for phrase in reset_phrases):
+        return "password_support"
+
+    return "general_support"
+
 
 @traceable(name="support_assistant")
 def answer_question(question: str) -> dict:
     """Answer a support question using simple rules."""
-
     question = question.strip()
 
     if not question:
         return {"answer": "Please enter a question."}
 
-    question_lower = question.lower()
+    category = get_support_category(question)
 
-    if any(
-        keyword in question_lower
-        for keyword in ["password", "log in", "login", "sign in"]
-    ):
+    if category == "password_support":
         answer = (
-            "To reset your password, open the login page "
-            "and select Forgot Password."
+            "To reset your password, open the login page and select Forgot Password."
         )
     else:
         answer = (
@@ -49,8 +68,14 @@ def answer_question(question: str) -> dict:
     return {"answer": answer}
 
 
-
 if __name__ == "__main__":
-    question = input("Ask support: ")
-    result = answer_question(question)
+    question = input("Ask support: ").strip()
+    category = get_support_category(question)
+
+    with tracing_context(
+        metadata={"support_category": category},
+        tags=[category],
+    ):
+        result = answer_question(question)
+
     print("Assistant:", result["answer"])

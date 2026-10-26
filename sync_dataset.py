@@ -1,4 +1,3 @@
-
 import json
 
 from langsmith import Client
@@ -17,14 +16,11 @@ def main():
     existing_examples = client.list_examples(dataset_id=dataset.id)
 
     existing_questions = {
-        example.inputs.get("question")
-        for example in existing_examples
+        example.inputs.get("question") for example in existing_examples
     }
 
     missing_examples = [
-        item
-        for item in examples
-        if item["question"] not in existing_questions
+        item for item in examples if item["question"] not in existing_questions
     ]
 
     if not missing_examples:
